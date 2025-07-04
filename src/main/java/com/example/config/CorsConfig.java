@@ -13,11 +13,13 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("https://*")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOriginPatterns("https://*",
+                                "http://localhost:*") // wildcard pattern                        .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true); // ✅ REQUIRED for session-based login
             }
         };
     }
 }
+
+
