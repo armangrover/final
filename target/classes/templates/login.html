@@ -3,7 +3,7 @@
 
 <head>
     <title>Login - Healthcare Tracker</title>
-    <link rel="icon" href="/favicon.ico" />
+    <!-- Removed favicon line -->
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 
@@ -22,6 +22,7 @@
             <label>Password:</label>
             <input type="password" name="password" required /><br />
             <button type="submit">Login</button>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         </form>
         <p><a th:href="@{/register}">Register</a></p>
     </main>

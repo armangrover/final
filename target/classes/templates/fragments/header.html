@@ -3,9 +3,9 @@
 
 <body>
     <div th:fragment="header">
-        <header>
+        <header style="background-color: #4A90E2; padding: 1em; color: white;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 th:text="${projectName != null ? projectName : 'Healthcare Tracker'}"></h1>
+                <h1 th:text="${projectName != null ? projectName : 'Healthcare Tracker'}" style="margin: 0;"></h1>
                 <button id="darkModeToggle"
                     style="background: none; border: none; color: #fff; font-size: 1.5em; cursor: pointer;"
                     title="Toggle dark mode">
