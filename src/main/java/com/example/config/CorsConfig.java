@@ -13,10 +13,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("https://*",
-                                "http://localhost:*") // wildcard pattern                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("https://final-production-ede2.up.railway.app", "http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
-                        .allowCredentials(true); // ✅ REQUIRED for session-based login
+                        .allowCredentials(true); // REQUIRED for session-based login
             }
         };
     }
