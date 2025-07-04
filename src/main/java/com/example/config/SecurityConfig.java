@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,33 +46,19 @@ public class SecurityConfig {
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(
-                                                                "/",
-                                                                "/login",
-                                                                "/register",
-                                                                "/css/**",
-                                                                "/js/**",
-                                                                "/images/**",
-                                                                "/favicon.ico",
-                                                                "/error",
-                                                                "/logout")
+                                                                "/", "/login", "/register",
+                                                                "/css/**", "/js/**", "/images/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
                                                 .loginPage("/login")
-                                                .defaultSuccessUrl("/dashboard") // Removed 'true' parameter
-                                                .failureUrl("/login?error=true")
-                                                .permitAll())
+                                                .defaultSuccessUrl("/dashboard", true)
+                                                .failureUrl("/login?error=true"))
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
-                                                .logoutSuccessUrl("/login?logout")
-                                                .invalidateHttpSession(true)
-                                                .deleteCookies("JSESSIONID")
-                                                .permitAll())
+                                                .logoutSuccessUrl("/login"))
                                 .sessionManagement(session -> session
-                                                .sessionFixation().migrateSession()
-                                                .maximumSessions(1)
-                                                .and()
-                                );
+                                                .maximumSessions(1));
                 return http.build();
         }
 
