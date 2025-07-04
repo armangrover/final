@@ -45,12 +45,15 @@ public class ViewController {
     public String dashboardPage(Model model, Principal principal) {
         try {
             if (principal == null) {
-                return "redirect:/login";
+                model.addAttribute("errorMessage", "You must be logged in to view the dashboard.");
+                return "error";
             }
 
+            System.out.println("Dashboard accessed by principal: " + principal.getName());
             Optional<User> userOpt = userRepo.findByUsername(principal.getName());
             if (userOpt.isEmpty()) {
-                return "redirect:/login";
+                model.addAttribute("errorMessage", "User not found in database: " + principal.getName());
+                return "error";
             }
 
             User user = userOpt.get();
