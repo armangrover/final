@@ -11,18 +11,30 @@
 
     <main>
         <h2>Welcome Back!</h2>
+
         <div th:if="${param.error}" class="error-message"
             style="background: #fee2e2; color: #b91c1c; padding: 1em; border-radius: 8px; margin-bottom: 1em; text-align:center; font-weight:600;">
             Invalid username or password.
         </div>
-        <form th:action="@{/login}" method="post">
-            <label>Username:</label>
-            <input type="text" name="username" required /><br />
-            <label>Password:</label>
-            <input type="password" name="password" required /><br />
+
+        <div th:if="${param.logout}" class="success-message"
+            style="background: #dcfce7; color: #15803d; padding: 1em; border-radius: 8px; margin-bottom: 1em; text-align:center; font-weight:600;">
+            You have been logged out successfully.
+        </div>
+
+        <form th:action="@{/login}" method="post" style="text-align: center;">
+            <div style="margin-bottom: 1em;">
+                <label for="username">Username:</label>
+                <input id="username" type="text" name="username" autocomplete="username" required />
+            </div>
+            <div style="margin-bottom: 1em;">
+                <label for="password">Password:</label>
+                <input id="password" type="password" name="password" autocomplete="current-password" required />
+            </div>
             <button type="submit">Login</button>
         </form>
-        <p><a th:href="@{/register}">Register</a></p>
+
+        <p style="text-align: center;"><a th:href="@{/register}">Don't have an account? Register</a></p>
     </main>
 
     <footer>
@@ -36,10 +48,10 @@
             function setDarkMode(on) {
                 if (on) {
                     document.body.classList.add('dark-mode');
-                    icon.textContent = '☀️';
+                    if (icon) icon.textContent = '☀️';
                 } else {
                     document.body.classList.remove('dark-mode');
-                    icon.textContent = '🌙';
+                    if (icon) icon.textContent = '🌙';
                 }
             }
             if (localStorage.getItem('darkMode') === 'true') setDarkMode(true);
