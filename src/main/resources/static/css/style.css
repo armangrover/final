@@ -1,20 +1,19 @@
-/*
- * style.css - Main Stylesheet
- */
-
-/* @import rules must be at the very top, before any other rules */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-/* Then define your CSS variables */
+/* Root Variables for Theming */
 :root {
     --primary: #2563eb;
+    /* blue */
     --accent: #22d3ee;
+    /* cyan */
     --text: #1e293b;
+    /* dark blue-gray */
     --background: #f3f4f6;
+    /* very light gray */
     --card-bg: #fff;
+    /* white */
     --light-border: #e5e7eb;
     --hover-row: #f1f5f9;
     --error: #ef4444;
+    /* red */
     --error-dark: #b91c1c;
     --table-head: #e0e7ff;
     --shadow: 0 8px 32px 0 rgba(37, 99, 235, 0.10);
@@ -37,7 +36,8 @@
     --shadow-hover: 0 16px 48px 0 rgba(6, 182, 212, 0.15);
 }
 
-/* Rest of your CSS rules... */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
 /* Global Styles */
 html,
 body {
