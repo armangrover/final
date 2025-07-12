@@ -2,49 +2,59 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
     <title>Login - Healthcare Tracker</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 
 <body>
+    <!-- Header -->
     <header th:replace="~{fragments/header :: header}"></header>
 
-    <main>
-        <h2>Welcome Back!</h2>
+    <!-- Navigation (optional) -->
+    <nav th:replace="~{fragments/nav :: nav}"></nav>
 
+    <!-- Main Content -->
+    <main style="max-width: 400px; margin: 2rem auto; padding: 2rem; border: 1px solid #ddd; border-radius: 10px;">
+        <h2 style="text-align: center; margin-bottom: 1.5rem;">Welcome Back!</h2>
+
+        <!-- Error message on login failure -->
         <div th:if="${param.error}" class="error-message"
             style="background: #fee2e2; color: #b91c1c; padding: 1em; border-radius: 8px; margin-bottom: 1em; text-align:center; font-weight:600;">
             Invalid username or password.
         </div>
 
+        <!-- Logout success message -->
         <div th:if="${param.logout}" class="success-message"
             style="background: #dcfce7; color: #15803d; padding: 1em; border-radius: 8px; margin-bottom: 1em; text-align:center; font-weight:600;">
             You have been logged out successfully.
         </div>
 
-        <form th:action="@{/login}" method="post" style="text-align: center;">
-            <div style="margin-bottom: 1em;">
-                <label for="username">Username:</label>
-                <input id="username" type="text" name="username" autocomplete="username" required />
-            </div>
-            <div style="margin-bottom: 1em;">
-                <label for="password">Password:</label>
-                <input id="password" type="password" name="password" autocomplete="current-password" required />
-            </div>
-            <button type="submit">Login</button>
+        <!-- Login Form -->
+        <form th:action="@{/login}" method="post" style="display: flex; flex-direction: column; gap: 1rem;">
+            <label for="username">Username:</label>
+            <input id="username" type="text" name="username" autocomplete="username" required />
+
+            <label for="password">Password:</label>
+            <input id="password" type="password" name="password" autocomplete="current-password" required />
+
+            <button type="submit" style="padding: 0.5rem; font-weight: bold;">Login</button>
         </form>
 
-        <p style="text-align: center;"><a th:href="@{/register}">Don't have an account? Register</a></p>
+        <p style="text-align: center; margin-top: 1.5rem;">
+            <a th:href="@{/register}">Don't have an account? Register</a>
+        </p>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Healthcare Tracker</p>
-    </footer>
+    <!-- Footer -->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
 
+    <!-- Dark Mode Toggle Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const toggleBtn = document.getElementById('darkModeToggle');
             const icon = document.getElementById('darkModeIcon');
+
             function setDarkMode(on) {
                 if (on) {
                     document.body.classList.add('dark-mode');
@@ -54,7 +64,11 @@
                     if (icon) icon.textContent = '🌙';
                 }
             }
-            if (localStorage.getItem('darkMode') === 'true') setDarkMode(true);
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                setDarkMode(true);
+            }
+
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', function () {
                     const isDark = !document.body.classList.contains('dark-mode');

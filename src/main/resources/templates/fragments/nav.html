@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <meta charset="UTF-8">
+</head>
+
 <body>
-    <nav th:fragment="nav">
-        <a th:href="@{/dashboard}">Dashboard</a>
-        <a th:href="@{/expenses}">Expenses</a>
-        <a th:href="@{/profile}">Profile</a>
-        <a th:href="@{/logout}">Logout</a>
+    <nav th:fragment="nav"
+        style="background-color: #e0e7ff; padding: 1rem; display: flex; gap: 1.5rem; justify-content: center;">
+        <a th:href="@{/dashboard}" style="text-decoration: none; color: #1e3a8a; font-weight: bold;">Dashboard</a>
+        <a th:href="@{/expenses}" style="text-decoration: none; color: #1e3a8a; font-weight: bold;">Expenses</a>
+        <a th:href="@{/profile}" style="text-decoration: none; color: #1e3a8a; font-weight: bold;">Profile</a>
+        <a th:href="@{/logout}" style="text-decoration: none; color: #dc2626; font-weight: bold;">Logout</a>
     </nav>
 </body>
 

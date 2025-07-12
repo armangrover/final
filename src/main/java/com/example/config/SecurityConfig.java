@@ -1,8 +1,11 @@
 package com.example.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.example.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +15,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+        @Autowired
+        private CustomUserDetailsService userDetailsService;
+
         @Bean
         @Order(1)
         public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
@@ -19,13 +25,8 @@ public class SecurityConfig {
                                 .securityMatcher("/api/**")
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers(
-                                                                "/api/auth/register",
-                                                                "/api/auth/logout",
-                                                                "/api/charts/**",
-                                                                "/v3/api-docs/**",
-                                                                "/swagger-ui/**",
-                                                                "/swagger-ui.html")
+                                                .requestMatchers("/api/auth/register", "/v3/api-docs/**",
+                                                                "/swagger-ui/**", "/swagger-ui.html")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session
@@ -41,8 +42,8 @@ public class SecurityConfig {
                 http
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/", "/login", "/register", "/error", "/css/**",
-                                                                "/js/**", "/images/**")
+                                                .requestMatchers("/", "/login", "/register", "/register-success",
+                                                                "/error", "/css/**", "/js/**", "/images/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
@@ -56,13 +57,21 @@ public class SecurityConfig {
                                                 .invalidateHttpSession(true)
                                                 .deleteCookies("JSESSIONID")
                                                 .permitAll())
-                                .sessionManagement(session -> session
-                                                .maximumSessions(1));
+                                .sessionManagement(session -> session.maximumSessions(1));
                 return http.build();
         }
 
         @Bean
         public PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
+        }
+
+        @Bean
+        public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+                return http.getSharedObject(AuthenticationManagerBuilder.class)
+                                .userDetailsService(userDetailsService)
+                                .passwordEncoder(passwordEncoder())
+                                .and()
+                                .build();
         }
 }

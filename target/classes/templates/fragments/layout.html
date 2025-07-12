@@ -2,16 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title th:text="${title}">Healthcare Tracker</title>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Healthcare Tracker'">Healthcare Tracker</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 
 <body>
     <header th:replace="fragments/header :: header"></header>
     <nav th:replace="fragments/nav :: nav"></nav>
+
     <main>
-        <div th:replace="${content}"></div>
+        <!-- This section will be replaced by child template content -->
+        <div th:fragment="layoutContent">
+            <p>This is default layout content. Replace this with child view.</p>
+        </div>
     </main>
+
     <footer th:replace="fragments/footer :: footer"></footer>
 </body>
 
