@@ -2,7 +2,8 @@ package com.example.config;
 
 import com.example.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig {
@@ -25,14 +27,17 @@ public class SecurityConfig {
                                 .securityMatcher("/api/**")
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/api/auth/register", "/v3/api-docs/**",
-                                                                "/swagger-ui/**", "/swagger-ui.html")
+                                                .requestMatchers(
+                                                                "/api/auth/register",
+                                                                "/api/auth/login",
+                                                                "/v3/api-docs/**",
+                                                                "/swagger-ui/**",
+                                                                "/swagger-ui.html")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                                .httpBasic(httpBasic -> {
-                                });
+                                .httpBasic();
                 return http.build();
         }
 
@@ -40,10 +45,18 @@ public class SecurityConfig {
         @Order(2)
         public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
                 http
-                                .csrf(csrf -> csrf.disable())
+                                .csrf(csrf -> csrf
+                                                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/", "/login", "/register", "/register-success",
-                                                                "/error", "/css/**", "/js/**", "/images/**")
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/login",
+                                                                "/register",
+                                                                "/register-success",
+                                                                "/error",
+                                                                "/css/**",
+                                                                "/js/**",
+                                                                "/images/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
@@ -57,7 +70,9 @@ public class SecurityConfig {
                                                 .invalidateHttpSession(true)
                                                 .deleteCookies("JSESSIONID")
                                                 .permitAll())
-                                .sessionManagement(session -> session.maximumSessions(1));
+                                .sessionManagement(session -> session
+                                                .maximumSessions(1)
+                                                .maxSessionsPreventsLogin(false));
                 return http.build();
         }
 

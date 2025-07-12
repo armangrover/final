@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ViewController {
 
     @GetMapping("/")
-    public String homePage() {
-        return "redirect:/login";
+    public String homePage(Principal principal) {
+        return principal != null ? "redirect:/dashboard" : "redirect:/login";
     }
 
     @GetMapping("/login")
@@ -60,10 +60,4 @@ public class ViewController {
     public String errorPage() {
         return "error";
     }
-
-    // ❌ REMOVE this:
-    // @GetMapping("/logout")
-    // public String logoutPage() {
-    // return "redirect:/login";
-    // }
 }
