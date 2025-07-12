@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 public class SecurityConfig {
 
@@ -22,7 +21,6 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(
                                                                 "/api/auth/register",
-                                                                "/api/auth/login",
                                                                 "/api/auth/logout",
                                                                 "/api/charts/**",
                                                                 "/v3/api-docs/**",
@@ -32,7 +30,8 @@ public class SecurityConfig {
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                                .httpBasic(httpBasic -> {});
+                                .httpBasic(httpBasic -> {
+                                });
                 return http.build();
         }
 
@@ -42,8 +41,8 @@ public class SecurityConfig {
                 http
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/", "/login", "/register",
-                                                                "/css/**", "/js/**", "/images/**", "/error", "/logout")
+                                                .requestMatchers("/", "/login", "/register", "/error", "/css/**",
+                                                                "/js/**", "/images/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
